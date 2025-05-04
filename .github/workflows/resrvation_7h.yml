@@ -1,0 +1,39 @@
+name: Book Interval Training
+
+on:
+  workflow_dispatch:  # Дозволяє запуск вручну
+  schedule:
+    - cron: '0 4 * * 1,3,5'  # Пн, Ср, Пт о 5:00 UTC (7:00 за Києвом)
+
+jobs:
+  book:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Install dependencies
+        run: |
+            pip install pdm
+            pdm config python.use_venv true
+            pdm install
+
+      - name: Install Chromium and chromedriver
+        run: |
+          sudo apt update
+          sudo apt install -y chromium-browser chromium-chromedriver
+          which chromium-browser
+          which chromedriver
+
+      - name: Run booking for Diana
+        env:
+          EMAIL: ${{ secrets.DIANA_EMAIL }}
+          PASSWORD: ${{ secrets.DIANA_PASSWORD }}
+          TRAINING_WITH_COACH: ${{ vars.INTERVAL_TRAINING }}
+        run: |
+          pdm run python main.py
