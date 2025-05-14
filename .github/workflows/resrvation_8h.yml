@@ -3,7 +3,7 @@ name: Book Stretching
 on:
   workflow_dispatch:  # Дозволяє запуск вручну
   schedule:
-    - cron: '55 4 * * 1,3,5'  # Пн, Ср, Пт о 4:55 UTC (8:00 за Києвом)
+    - cron: '56 4 * * 1,3,5'  # Пн, Ср, Пт о 4:55 UTC (8:00 за Києвом)
 
 jobs:
   book:
